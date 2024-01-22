@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Grade extends Model
 {
     protected $fillable = [
-        'title'
+        'video_id',
+        'user_id',
+        'likes',
+        'dislikes'
     ];
 }

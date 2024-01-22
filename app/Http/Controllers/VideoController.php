@@ -3,28 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Grade;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Video $video)
-    {
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -46,7 +31,12 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        return view('video', ['video' => $video]);
+        if (Auth::user()) {
+            $grades = Grade::where('user_id', Auth::user()->id)->where('video_id', $video->id)->get();
+        } else {
+            $grades = null;
+        }
+        return view('video', ['video' => $video, 'grade' => $grades]);
     }
 
     /**
@@ -73,6 +63,21 @@ class VideoController extends Controller
     {
         $video->delete();
         return redirect()->back();
+    }
+
+    public function like(Video $video){
+        $video->like += 1;
+        $video->save();
+        Grade::create([
+            'video_id' => $video->id,
+            'user_id' => Auth::user()->id,
+            'likes' => true
+        ]);
+        return redirect()->back();
+    }
+
+    public function dislike(){
+
     }
 }
 
