@@ -32,7 +32,7 @@ class VideoController extends Controller
     {
         $data = $request->all();
         $filename = $request->file('video')->getClientOriginalName();
-        $path = $request->file('video')->storeAs($filename);
+        $path = $request->file('video')->storeAs('public', $filename);
         $data = array_merge($data, [
             'video' => $filename,
             'user_id' => Auth::user()->id,
@@ -72,7 +72,7 @@ class VideoController extends Controller
     public function destroy(Video $video)
     {
         $video->delete();
-        return redirect()->back();    
+        return redirect()->back();
     }
 }
 

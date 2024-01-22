@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
+        <h1>Последние видео</h1>
         <div class="d-flex justify-content-between gap-3">
-
             @foreach ($videos as $item)
                 <div class="card bg-dark text-light shadow">
                     <h5 class="card-header">{{ $item->title }}</h5>
