@@ -11,6 +11,14 @@
                     data-bs-target="#exampleModal">+</button>
             </div>
         </div>
+        <div>
+            <ul class="list-group list-group-horizontal" style="height: 30xp">
+                <li class="list-group-item"><a href="/home"><img style="width: 30px;" src="img/desc-sort.png"
+                            alt="<"></a></li>
+                <li class="list-group-item"><a href="/home?sort=desc"><img style="width: 30px;" src="img/asc-sort.png"
+                            alt=">"></a></li>
+            </ul>
+        </div>
         @foreach ($videos as $item)
             <div>
                 <div class="card bg-dark text-light shadow">
@@ -19,7 +27,14 @@
                         <h5 class="card-title">{{ $item->category_id }}</h5>
                         <p class="card-text">{{ $item->description }}</p>
                         <p class="card-text">{{ $item->created_at }}</p>
-
+                        <div class="d-flex gap-3">
+                            <div class="d-flex gap-3">
+                                <div>{{ $item->like }}</div><img style="width: 30px" src="/img/like.png" alt="">
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <div>{{ $item->dislike }}</div><img style="width: 30px; transform: rotate(180deg)" src="/img/dislike.png" alt="">
+                            </div>
+                        </div>
                         <div class="d-flex justify-content-between">
                             <div class="d-flex gap-3">
                                 <a href="{{ route('videos.edit', $item->id) }}"

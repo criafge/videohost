@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Video;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -23,8 +25,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Auth::user()->role_id === 1 ? view('admin.home') : view('home', ['categories' => Category::all(), 'videos' => Auth::user()->videos]);
+        if (!isset($request->sort)) {
+            $videos = Video::where('user_id', Auth::user()->id)->orderBy('like', 'desc')->get();
+        } else {
+            $videos = Video::where('user_id', Auth::user()->id)->orderBy('dislike', 'desc')->get();
+        }
+        return Auth::user()->role_id === 1 ? view('admin.home') : view('home', ['categories' => Category::all(), 'videos' => $videos]);
     }
 }

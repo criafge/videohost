@@ -11,8 +11,8 @@
             <h3>{{ $video->title }}</h3>
             <div class="d-flex align-items-center gap-5">
                 <div class="d-flex gap-2 align-items-center">
-                    <div>{{ $video->like }}</div><a class="" href="{{ route('like', $video->id) }}">
-                        @if ($grade !== null && $grade->likes === true)
+                    <div>{{ $video->like }}</div><a href="{{ route('like', $video->id) }}">
+                        @if ($grade !== null && $grade->likes === 1)
                             <img style="width: 40px" src="/img/like-true.png" alt="">
                         @else
                             <img style="width: 40px" src="/img/like.png" alt="">
@@ -20,8 +20,13 @@
                     </a>
                 </div>
                 <div class="d-flex gap-2 align-items-center">
-                    <div>{{ $video->dislike }}</div><a class="" href="{{ route('dislike', $video->id) }}"><img
-                            style="width: 40px; transform: rotate(180deg);" src="/img/dislike.png" alt=""></a>
+                    <div>{{ $video->dislike }}</div><a href="{{ route('dislike', $video->id) }}">
+                        @if ($grade !== null && $grade->dislikes === 1)
+                            <img style="width: 40px; transform: rotate(180deg)" src="/img/dislike-true.png" alt="">
+                        @else
+                            <img style="width: 40px; transform: rotate(180deg)" src="/img/dislike.png" alt="">
+                        @endif
+                    </a>
                 </div>
             </div>
         </div>
@@ -30,7 +35,36 @@
             <p>{{ $video->created_at }}</p>
         </div>
         <div>
-            <h3>Комментарии</h3>
+            <h4>Комментарии</h4>
+            <form action="{{ route('videos.comments.store', $video->id) }}" method="post">
+                @csrf
+                <textarea name="description" class="form-control bg-dark text-light" placeholder="Оставить комментарий"></textarea>
+                <div class="d-flex justify-content-end m-2">
+                    <input class="btn btn-danger" type="submit" value="Оставить комментарий">
+                </div>
+            </form>
+            <div>
+                @foreach ($comments as $item)
+                    <div class="card text-bg-dark">
+                        <div class="card-header d-flex justify-content-between">
+                            <div>{{ $item->user->name }}</div>
+                            @if ($item->user_id === auth()->user()->id)
+                                <form action="{{route('videos.comments.destroy', [$video->id, $item->id])}}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" >Удалить</button>
+                                </form>
+                            @endif
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p>{{ $item->description }}</p>
+                                <footer class="footer fs-6">{{ $item->created_at }}</footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 @endsection

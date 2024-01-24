@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVideoRequest;
+use App\Http\Requests\UpdateVideoRequest;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Grade;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -13,7 +16,7 @@ class VideoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVideoRequest $request)
     {
         $data = $request->all();
         $filename = $request->file('video')->getClientOriginalName();
@@ -32,11 +35,12 @@ class VideoController extends Controller
     public function show(Video $video)
     {
         if (Auth::user()) {
-            $grades = Grade::where('user_id', Auth::user()->id)->where('video_id', $video->id)->get();
+            $grades = Grade::where('user_id', Auth::user()->id)->where('video_id', $video->id)->first();
         } else {
             $grades = null;
         }
-        return view('video', ['video' => $video, 'grade' => $grades]);
+        $comments = Comment::with('user')->where('video_id', $video->id)->get();
+        return view('video', ['video' => $video, 'grade' => $grades, 'comments' => $comments->all()]);
     }
 
     /**
@@ -50,7 +54,7 @@ class VideoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Video $video)
+    public function update(UpdateVideoRequest $request, Video $video)
     {
         $video->update($request->all());
         return redirect()->route('home');
@@ -65,21 +69,65 @@ class VideoController extends Controller
         return redirect()->back();
     }
 
-    public function like(Video $video){
-        $video->like += 1;
+    public function like(Video $video)
+    {
+        $grade = $this->getGrade($video->id);
+        if ($grade !== null) {
+            if ($grade->likes === 1) {
+                $video->like -= 1;
+                $grade->likes = false;
+            } elseif ($grade->dislikes === 1) {
+                $video->dislike -= 1;
+                $video->like += 1;
+                $grade->likes = true;
+                $grade->dislikes = false;
+            } else {
+                $video->like += 1;
+                $grade->likes = true;
+            }
+            $grade->save();
+        } else {
+            Grade::create([
+                'video_id' => $video->id,
+                'user_id' => Auth::user()->id,
+                'likes' => true
+            ]);
+            $video->like += 1;
+        }
         $video->save();
-        Grade::create([
-            'video_id' => $video->id,
-            'user_id' => Auth::user()->id,
-            'likes' => true
-        ]);
         return redirect()->back();
     }
 
-    public function dislike(){
+    public function dislike(Video $video)
+    {
+        $grade = $this->getGrade($video->id);
+        if ($grade !== null) {
+            if ($grade->dislikes === 1) {
+                $video->dislike -= 1;
+                $grade->dislikes = false;
+            } elseif ($grade->likes === 1) {
+                $video->like -= 1;
+                $video->dislike += 1;
+                $grade->dislikes = true;
+                $grade->likes = false;
+            } else {
+                $video->dislike += 1;
+                $grade->dislikes = true;
+            }
+            $grade->save();
+        } else {
+            Grade::create([
+                'video_id' => $video->id,
+                'user_id' => Auth::user()->id,
+                'dislikes' => true
+            ]);
+        }
+        $video->save();
+        return redirect()->back();
+    }
 
+    protected function getGrade($id)
+    {
+        return Auth::user()->grades($id);
     }
 }
-
-
-

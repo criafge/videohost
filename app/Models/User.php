@@ -47,4 +47,10 @@ class User extends Authenticatable
     public function videos(){
         return $this->hasMany(Video::class);
     }
+    public function grades($video){
+        return $this->hasOne(Grade::class)->where('video_id', $video)->first();
+    }
+    public function comment(){
+        return $this->hasMany(Comment::class);
+    }
 }

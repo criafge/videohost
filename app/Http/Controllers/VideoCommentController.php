@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Models\Comment;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CommentController extends Controller
+class VideoCommentController extends Controller
 {
-
-    protected $user = Auth::user();
 
     /**
      * Store a newly created resource in storage.
@@ -18,9 +18,10 @@ class CommentController extends Controller
     {
         Comment::create([
             'description' => $request->description,
-            'user_id' => $user->id,
-
-        ])
+            'user_id' => Auth::user()->id,
+            'video_id' => $video->id
+        ]);
+        return redirect()->back();
     }
 
     /**
@@ -50,8 +51,9 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Video $video, Comment $comment)
     {
-        //
+        $comment->delete();
+        return redirect()->back();
     }
 }
