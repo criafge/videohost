@@ -19,7 +19,6 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <body class="text-bg-dark">
@@ -27,7 +26,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm ">
             <div class="container">
                 <a class="navbar-brand text-light" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <p>ВеСелЫЫЫЫе коШМарИки</p>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -71,6 +70,7 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                    <a href="{{route('home')}}" class="dropdown-item">Кабинет</a>
                                 </div>
                             </li>
                         @endguest

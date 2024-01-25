@@ -32,6 +32,6 @@ class HomeController extends Controller
         } else {
             $videos = Video::where('user_id', Auth::user()->id)->orderBy('dislike', 'desc')->get();
         }
-        return Auth::user()->role_id === 1 ? view('admin.home') : view('home', ['categories' => Category::all(), 'videos' => $videos]);
+        return Auth::user()->role_id === 1 ? redirect('admin') : view('home', ['categories' => Category::all(), 'videos' => $videos]);
     }
 }

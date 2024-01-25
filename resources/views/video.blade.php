@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex justify-content-center">
         <video controls class="w-75">
-            <source src="{{ Storage::url('video.mp4') }}" type="video/mp4">
+            <source src="{{ Storage::url($video->video) }}" type="video/mp4">
         </video>
     </div>
     <div class="container">
