@@ -20,4 +20,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('video/{video}/like', [VideoController::class, 'like'])->name('like');
     Route::get('video/{video}/dislike', [VideoController::class, 'dislike'])->name('dislike');
+
+    Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function(){
+        Route::get('/', App\Http\Controllers\admin\IndexController::class)->name('admin');
+    });
 });

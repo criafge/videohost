@@ -20,7 +20,7 @@ class CommentController extends Controller
             'description' => $request->description,
             'user_id' => $user->id,
 
-        ])
+        ]);
     }
 
     /**
