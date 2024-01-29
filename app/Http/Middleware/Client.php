@@ -16,6 +16,6 @@ class Client
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return Auth::user()->role_id === 2 ? redirect()->back() : $next($request);
+        return Auth::user()->role_id !== 2 ? redirect()->back() : $next($request);
     }
 }

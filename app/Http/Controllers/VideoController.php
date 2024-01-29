@@ -121,6 +121,7 @@ class VideoController extends Controller
                 'user_id' => Auth::user()->id,
                 'dislikes' => true
             ]);
+            $video->dislike += 1;
         }
         $video->save();
         return redirect()->back();

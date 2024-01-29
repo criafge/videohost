@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
 class VideoCommentController extends Controller
@@ -16,6 +17,7 @@ class VideoCommentController extends Controller
      */
     public function store(StoreCommentRequest $request, Video $video)
     {
+        
         Comment::create([
             'description' => $request->description,
             'user_id' => Auth::user()->id,

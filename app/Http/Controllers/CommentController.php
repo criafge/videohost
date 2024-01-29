@@ -16,11 +16,7 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request, Video $video)
     {
-        Comment::create([
-            'description' => $request->description,
-            'user_id' => $user->id,
-
-        ]);
+        
     }
 
     /**
