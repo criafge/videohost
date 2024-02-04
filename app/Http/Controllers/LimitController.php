@@ -7,27 +7,11 @@ use Illuminate\Http\Request;
 
 class LimitController extends Controller
 {
-    public function a(Video $video){
+
+    public function changeStatus(Video $video, $item)
+    {
         $video->update([
-            'limit_id'=> 2
-        ]);
-        return redirect()->back();
-    }
-    public function b(Video $video){
-        $video->update([
-            'limit_id'=> 3
-        ]);
-        return redirect()->back();
-    }
-    public function c(Video $video){
-        $video->update([
-            'limit_id'=> 4
-        ]);
-        return redirect()->back();
-    }
-    public function d(Video $video){
-        $video->update([
-            'limit_id'=> 1
+            'limit_id' => $item
         ]);
         return redirect()->back();
     }

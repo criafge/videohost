@@ -18,6 +18,7 @@
                         <h5 class="card-title">{{ $item->category_id }}</h5>
                         <p class="card-text">{{ $item->description }}</p>
                         <p class="card-text">{{ $item->created_at }}</p>
+                        <p class="card-text">{{ $item->status }}</p>
                         <div class="d-flex gap-3">
                             <div class="d-flex gap-3">
                                 <div>{{ $item->like }}</div><img style="width: 30px" src="/img/like.png" alt="">
@@ -29,12 +30,12 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <div class="d-flex gap-3">
-                                <a href="{{ route('a', $item->id) }}" class="btn btn-outline-light">Нарушение
+                                <a href="{{ route('change-status', [$item->id, 2]) }}" class="btn btn-outline-light">Нарушение
                                     👺</a>
-                                <a href="{{ route('b', $item->id) }}" class="btn btn-outline-light">Теневой
+                                <a href="{{ route('change-status', [$item->id, 3]) }}" class="btn btn-outline-light">Теневой
                                     бан👹</a>
-                                <a href="{{ route('c', $item->id) }}" class="btn btn-outline-light">Бан 💀</a>
-                                <a href="{{ route('d', $item->id) }}" class="btn btn-outline-light">Снять ограничения 😜</a>
+                                <a href="{{ route('change-status', [$item->id, 4]) }}" class="btn btn-outline-light">Бан 💀</a>
+                                <a href="{{ route('change-status', [$item->id, 1]) }}" class="btn btn-outline-danger">Снять ограничения 😜</a>
                             </div>
                             <a href="{{ route('videos.show', $item->id) }}" class="link-light">Перейти к странице
                                 видео</a>

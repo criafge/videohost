@@ -14,6 +14,10 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request, Video $video, Category $category)
     {
-        return view('admin.home', ['videos' => $video->all(), 'categories' => $category->all()]);
+        $videos = $video->all();
+        foreach($videos as $item){
+            $item->status = $item->limit->title;
+        }
+        return view('admin.home', ['videos' => $videos, 'categories' => $category->all()]);
     }
 }
