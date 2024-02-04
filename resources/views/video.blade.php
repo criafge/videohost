@@ -11,8 +11,8 @@
             <h3>{{ $video->title }}</h3>
             <div class="d-flex align-items-center gap-5">
                 <div class="d-flex gap-2 align-items-center">
-                    <div>{{ $video->like }}</div><a href="{{ route('like', $video->id) }}">
-                        @if ($grade !== null && $grade->likes === 1)
+                    <div>{{ $video->like }}</div><a href="{{ route('change-grade', [$video->id, 1]) }}">
+                        @if ($grade !== null && $grade->like === 1)
                             <img style="width: 40px" src="/img/like-true.png" alt="">
                         @else
                             <img style="width: 40px" src="/img/like.png" alt="">
@@ -20,8 +20,8 @@
                     </a>
                 </div>
                 <div class="d-flex gap-2 align-items-center">
-                    <div>{{ $video->dislike }}</div><a href="{{ route('dislike', $video->id) }}">
-                        @if ($grade !== null && $grade->dislikes === 1)
+                    <div>{{ $video->dislike }}</div><a href="{{ route('change-grade', [$video->id, 0]) }}">
+                        @if ($grade !== null && $grade->dislike === 1)
                             <img style="width: 40px; transform: rotate(180deg)" src="/img/dislike-true.png" alt="">
                         @else
                             <img style="width: 40px; transform: rotate(180deg)" src="/img/dislike.png" alt="">

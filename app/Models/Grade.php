@@ -10,7 +10,7 @@ class Grade extends Model
     protected $fillable = [
         'video_id',
         'user_id',
-        'likes',
-        'dislikes'
+        'like',
+        'dislike'
     ];
 }

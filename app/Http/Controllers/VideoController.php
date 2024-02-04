@@ -69,66 +69,55 @@ class VideoController extends Controller
         return redirect()->back();
     }
 
-    public function like(Video $video)
+
+    public function changeGrade(Video $video, $whichGrade)
     {
         $grade = $this->getGrade($video->id);
+
+        $item = $this->whichGrade($whichGrade);
+
+        $grade_create = ['video_id' => $video->id,'user_id' => Auth::user()->id, $item => true];
+
         if ($grade !== null) {
-            if ($grade->likes === 1) {
-                $video->like -= 1;
-                $grade->likes = false;
-            } elseif ($grade->dislikes === 1) {
-                $video->dislike -= 1;
-                $video->like += 1;
-                $grade->likes = true;
-                $grade->dislikes = false;
-            } else {
-                $video->like += 1;
-                $grade->likes = true;
+
+            if ($grade->$item === 1) {
+                $this->gradeFalse($item, $video, $grade);
             }
+            elseif ($grade->like === 0 && $grade->dislike === 0) {
+                $this->gradeTrue($item, $video, $grade);
+            }
+            else {
+                $this->gradeTrue($item, $video, $grade);
+                $this->gradeFalse($this->whichGrade(!$whichGrade), $video, $grade);
+            }
+
             $grade->save();
-        } else {
-            Grade::create([
-                'video_id' => $video->id,
-                'user_id' => Auth::user()->id,
-                'likes' => true
-            ]);
-            $video->like += 1;
+        }
+        else {
+            Grade::create($grade_create);
+            $video->$item += 1;
         }
         $video->save();
         return redirect()->back();
     }
 
-    public function dislike(Video $video)
+    protected function gradeFalse($item, $video, $grade)
     {
-        $grade = $this->getGrade($video->id);
-        if ($grade !== null) {
-            if ($grade->dislikes === 1) {
-                $video->dislike -= 1;
-                $grade->dislikes = false;
-            } elseif ($grade->likes === 1) {
-                $video->like -= 1;
-                $video->dislike += 1;
-                $grade->dislikes = true;
-                $grade->likes = false;
-            } else {
-                $video->dislike += 1;
-                $grade->dislikes = true;
-            }
-            $grade->save();
-        } else {
-            Grade::create([
-                'video_id' => $video->id,
-                'user_id' => Auth::user()->id,
-                'dislikes' => true
-            ]);
-            $video->dislike += 1;
-        }
-        $video->save();
-        return redirect()->back();
+        $video->$item -= 1;
+        $grade->$item = false;
     }
 
+    protected function gradeTrue($item, $video, $grade)
+    {
+        $video->$item += 1;
+        $grade->$item = true;
+    }
     protected function getGrade($id)
     {
         return Auth::user()->grades($id);
+    }
+
+    protected function whichGrade($item){
+        return $item == true ? 'like' : 'dislike';
     }
 }

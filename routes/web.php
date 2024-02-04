@@ -13,14 +13,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('videos', VideoController::class)->except('index', 'create');
 
     Route::group(['middleware' => 'client'], function () {
-        Route::get('video/{video}/like', [VideoController::class, 'like'])->name('like');
-        Route::get('video/{video}/dislike', [VideoController::class, 'dislike'])->name('dislike');
+
+        // Route::get('video/{video}/like', [VideoController::class, 'like'])->name('like');
+        // Route::get('video/{video}/dislike', [VideoController::class, 'dislike'])->name('dislike');
+
+        Route::get('video/{video}/{whichGrade}', [VideoController::class, 'changeGrade'])->name('change-grade');
+
         Route::resource('videos.comments', VideoCommentController::class)->only('store', 'destroy');
     });
 
@@ -32,3 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('d', [LimitController::class, 'd'])->name('d');
     });
 });
+
+
+
+

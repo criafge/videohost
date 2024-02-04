@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('video_id')->references('id')->on('videos');
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->boolean('likes')->default(false);
-            $table->boolean('dislikes')->default(false);
+            $table->boolean('like')->default(false);
+            $table->boolean('dislike')->default(false);
             $table->timestamps();
         });
     }
