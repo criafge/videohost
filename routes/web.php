@@ -13,8 +13,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('videos/{video}', [VideoController::class, 'show'])->name('videos.show')->middleware('limit');
+
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('videos', VideoController::class)->except('index', 'create');
+    Route::resource('videos', VideoController::class)->except('index', 'create', 'show');
 
     Route::group(['middleware' => 'client'], function () {
         Route::get('video/{video}/{whichGrade}', [VideoController::class, 'changeGrade'])->name('change-grade');
@@ -26,7 +28,3 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('change/status/{video}/{item}', [LimitController::class, 'changeStatus'])->name('change-status');
     });
 });
-
-
-
-

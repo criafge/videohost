@@ -28,9 +28,12 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         if (!isset($request->sort)) {
-            $videos = Video::where('user_id', Auth::user()->id)->orderBy('like', 'desc')->get();
+            $videos = Video::where('user_id', Auth::user()->id)->where('limit_id', '!=', 4)->orderBy('like', 'desc')->get();
         } else {
-            $videos = Video::where('user_id', Auth::user()->id)->orderBy('dislike', 'desc')->get();
+            $videos = Video::where('user_id', Auth::user()->id)->where('limit_id', '!=', 4)->orderBy('dislike', 'desc')->get();
+        }
+        foreach($videos as $item){
+            $item->status = $item->limit->title;
         }
         return Auth::user()->role_id === 1 ? redirect('admin') : view('home', ['categories' => Category::all(), 'videos' => $videos]);
     }

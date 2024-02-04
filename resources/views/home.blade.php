@@ -27,6 +27,7 @@
                         <h5 class="card-title">{{ $item->category_id }}</h5>
                         <p class="card-text">{{ $item->description }}</p>
                         <p class="card-text">{{ $item->created_at }}</p>
+                        <p class="card-text">{{ $item->status }}</p>
                         <div class="d-flex gap-3">
                             <div class="d-flex gap-3">
                                 <div>{{ $item->like }}</div><img style="width: 30px" src="/img/like.png" alt="">

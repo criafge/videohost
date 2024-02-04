@@ -34,12 +34,9 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        if (Auth::user()) {
-            $grades = Grade::where('user_id', Auth::user()->id)->where('video_id', $video->id)->first();
-        } else {
-            $grades = null;
-        }
+        $grades = Auth::user() ? Grade::where('user_id', Auth::user()->id)->where('video_id', $video->id)->first() : null;
         $comments = Comment::with('user')->where('video_id', $video->id)->get();
+
         return view('video', ['video' => $video, 'grade' => $grades, 'comments' => $comments->all()]);
     }
 
@@ -101,22 +98,17 @@ class VideoController extends Controller
         return redirect()->back();
     }
 
-    protected function gradeFalse($item, $video, $grade)
-    {
+    protected function gradeFalse($item, $video, $grade){
         $video->$item -= 1;
         $grade->$item = false;
     }
-
-    protected function gradeTrue($item, $video, $grade)
-    {
+    protected function gradeTrue($item, $video, $grade){
         $video->$item += 1;
         $grade->$item = true;
     }
-    protected function getGrade($id)
-    {
+    protected function getGrade($id){
         return Auth::user()->grades($id);
     }
-
     protected function whichGrade($item){
         return $item == true ? 'like' : 'dislike';
     }
