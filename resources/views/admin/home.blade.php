@@ -15,7 +15,6 @@
                 <div class="card bg-dark text-light shadow">
                     <h5 class="card-header">{{ $item->title }}</h5>
                     <div class="card-body">
-                        <h5 class="card-title">{{ $item->category_id }}</h5>
                         <p class="card-text">{{ $item->description }}</p>
                         <p class="card-text">{{ $item->created_at }}</p>
                         <p class="card-text">{{ $item->status }}</p>

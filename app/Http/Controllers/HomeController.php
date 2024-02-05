@@ -34,6 +34,7 @@ class HomeController extends Controller
         }
         foreach($videos as $item){
             $item->status = $item->limit->title;
+            $item->category = $item->category->title;
         }
         return Auth::user()->role_id === 1 ? redirect('admin') : view('home', ['categories' => Category::all(), 'videos' => $videos]);
     }
