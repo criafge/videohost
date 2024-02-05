@@ -52,7 +52,7 @@
                                 <form action="{{route('videos.comments.destroy', [$video->id, $item->id])}}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button type="submit" >Удалить</button>
+                                    <button class="btn btn-dark" type="submit" >Удалить</button>
                                 </form>
                             @endif
                         </div>

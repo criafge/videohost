@@ -17,6 +17,7 @@ class IndexController extends Controller
         $videos = $video->all();
         foreach($videos as $item){
             $item->status = $item->limit->title;
+            $item->category = $item->category->title;
         }
         return view('admin.home', ['videos' => $videos, 'categories' => $category->all()]);
     }
